@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:music_flutter/welcom.dart';
 
 void main() => runApp(const MyApp());
 
@@ -8,17 +9,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'MaterialApp',
-      home: Scaffold(
-        appBar: AppBar(
-          title:  const Text('Material App Bar'),
-        ),
-        body: Center(
-          child: Container(
-            child: const Text('hello world'),
-          ),
-        ),
-      ),
+      title: 'Music_Flutter',
+      home: WelcomePage(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
