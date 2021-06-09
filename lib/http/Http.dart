@@ -60,13 +60,16 @@ class Http {
     Options? options,
     CancelToken? cancelToken,
   }) async {
-    return await HttpRequest().post(
+
+    Map<String,dynamic> res = await HttpRequest().post(
       path,
       params: params,
       data: data,
       options: options,
       cancelToken: cancelToken,
     );
+
+    return res;
   }
 
 
