@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:music_flutter/view/root_pages/home_page.dart';
+import 'package:music_flutter/view/root_pages/music_page.dart';
+import 'package:music_flutter/view/root_pages/profile_page.dart';
+import 'package:music_flutter/view/root_pages/video_page.dart';
 
 class RootPage extends StatefulWidget {
   const RootPage({Key? key}) : super(key: key);
@@ -19,7 +23,17 @@ const Map _bottomNames = {
 class _RootPageState extends State<RootPage> {
   int _currentIndex = 0;
   final List<BottomNavigationBarItem> _bottomNavBatItemList = [];
+
+  final List<Widget> _pages = [
+    HomePage(),
+    MusicPage(),
+    Container(),
+    VideoPage(),
+    ProfilePage()
+  ];
+
   bool _midIconIsChecked = false;
+
   @override
   void initState() {
     // TODO: implement initState
@@ -28,14 +42,11 @@ class _RootPageState extends State<RootPage> {
       _bottomNavBatItemList.add(_bottomNavigationBarItem(key, value));
     });
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        child: Center(
-            child: Text('RootPage')
-        ),
-      ),
+      body: _pages[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         items: _bottomNavBatItemList,
         currentIndex: _currentIndex,

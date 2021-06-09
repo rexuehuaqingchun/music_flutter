@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:music_flutter/welcom.dart';
 
+import 'config/app_theme.dart';
+
 void main() => runApp(const MyApp());
 
 class MyApp extends StatelessWidget {
@@ -12,6 +14,7 @@ class MyApp extends StatelessWidget {
       title: 'Music_Flutter',
       home: WelcomePage(),
       debugShowCheckedModeBanner: false,
+      theme: themeData,
     );
   }
 }
