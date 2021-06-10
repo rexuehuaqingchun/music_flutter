@@ -40,13 +40,16 @@ class SingerCard extends StatelessWidget {
           ),
         ),
         Row(
-          children: [],
+          children: [
+            _iconText('歌曲',musicCount),
+            _iconText('播放',musicPlayCount)
+          ],
         )
       ],
     );
   }
 
-  Widget _iconText(int count) {
+  Widget _iconText(String label,int count) {
     return Expanded(
       child: Row(
         children: [
@@ -56,7 +59,7 @@ class SingerCard extends StatelessWidget {
           ),
           Expanded(
             child: Text(
-              '歌曲' + formCharCount(musicCount),
+              label + formCharCount(musicCount),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(fontSize: 12, color: AppColors.unactive),
