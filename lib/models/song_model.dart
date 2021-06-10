@@ -20,7 +20,7 @@ class SongItem {
   final int commentCount;
   final int thumbUpCount;
   final int readCount;
-  //final UserItem user;
+  final UserItem user;
 
   SongItem(
       {required this.id,
@@ -31,8 +31,8 @@ class SongItem {
       required this.enName,
       required this.commentCount,
       required this.thumbUpCount,
-      required this.readCount
-      //required this.user
+      required this.readCount,
+      required this.user
       });
 
   factory SongItem.fromJson(dynamic item) {
@@ -45,8 +45,8 @@ class SongItem {
         enName: item['enName'],
         commentCount: item['commentCount'],
         thumbUpCount: item['thumbUpCount'],
-        readCount: item['readCount']
-        //user: UserItem.formJson(item['user'])
+        readCount: item['readCount'],
+        user: UserItem.formJson(item['User'])
         );
   }
 }

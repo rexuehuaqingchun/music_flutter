@@ -1,3 +1,11 @@
+class UserList {
+  final List<UserItem> list;
+  UserList(this.list);
+  factory UserList.fromJson(List<dynamic> list) {
+    return UserList(list.map((item) => UserItem.formJson(item)).toList());
+  }
+}
+
 class UserItem {
   final int id;
   final String coverPictureUrl;

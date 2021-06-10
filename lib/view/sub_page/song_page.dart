@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:music_flutter/components/song_card.dart';
 import 'package:music_flutter/models/song_model.dart';
 import 'package:music_flutter/services/song_service.dart';
 
@@ -51,9 +52,11 @@ class _SongPageState extends State<SongPage> {
     return ListView.builder(
       itemCount: _songList.length,
       itemBuilder: (BuildContext context,int index){
-        return Container(
-          height: 30,
-          color: Colors.indigoAccent.withOpacity(index/10),
+        return Column(
+          children: [
+            const SizedBox(height: 8),
+            SongCard(songItem: _songList[index]),
+          ],
         );
       },
     );
