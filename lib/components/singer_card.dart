@@ -31,12 +31,12 @@ class SingerCard extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 8),
+          padding: const EdgeInsets.symmetric(vertical: 8),
           child: Text(
             nickname,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
-            style: TextStyle(fontSize: 16, color: AppColors.active),
+            style: const TextStyle(fontSize: 16, color: AppColors.active),
           ),
         ),
         Row(
@@ -53,7 +53,7 @@ class SingerCard extends StatelessWidget {
     return Expanded(
       child: Row(
         children: [
-          Icon(
+          const Icon(
             Icons.select_all,
             size: 16,
           ),
@@ -62,7 +62,7 @@ class SingerCard extends StatelessWidget {
               label + formCharCount(musicCount),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 12, color: AppColors.unactive),
+              style: const TextStyle(fontSize: 12, color: AppColors.unactive),
             ),
           ),
         ],

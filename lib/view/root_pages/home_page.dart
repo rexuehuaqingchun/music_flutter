@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:music_flutter/components/root_page_head.dart';
 import 'package:music_flutter/config/http_options.dart';
 import 'package:music_flutter/http/Http.dart';
+import 'package:music_flutter/view/sub_page/singer_page.dart';
 import 'package:music_flutter/view/sub_page/song_page.dart';
 
 class HomePage extends StatefulWidget {
@@ -38,7 +39,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   final List<Widget> _tabsContent = [
     SongPage(),
     Text('推荐'),
-    Text('歌手'),
+    SingerPage(),
     Text('小视频'),
     Text('文章'),
     Text('视频'),

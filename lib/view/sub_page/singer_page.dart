@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:music_flutter/components/singer_card.dart';
 import 'package:music_flutter/models/user_model.dart';
 import 'package:music_flutter/services/user_service.dart';
@@ -10,29 +11,31 @@ class SingerPage extends StatefulWidget {
   _SingerPageState createState() => _SingerPageState();
 }
 
-class _SingerPageState extends State<SingerPage> {
+class _SingerPageState extends State<SingerPage>
+    with AutomaticKeepAliveClientMixin {
   List<UserItem> _singerList = UserList([]).list;
 
   int page = 1;
   int limit = 10;
-  bool haseMore = true;
+  bool hasMore = true;
   bool error = false;
   String errorMsg = '';
 
+  late EasyRefreshController _easyRefreshController;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _easyRefreshController = new EasyRefreshController();
     _getSingers();
   }
 
   Future _getSingers({bool push = true}) async {
     try {
-      Map<String, dynamic> result =
-          await UserService.getUsers(page: page, type: 'DQ_SINGER');
+      Map<String, dynamic> result = await UserService.getUsers(page: page);
       UserList userList = UserList.fromJson(result['list']);
       setState(() {
-        haseMore = page * limit < result['total'];
+        hasMore = page * limit < result['total'];
         page++;
         if (push) {
           _singerList.addAll(userList.list);
@@ -48,22 +51,56 @@ class _SingerPageState extends State<SingerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: _singerList.length,
-      itemBuilder: (BuildContext context, int index) {
-        UserItem userItem = _singerList[index];
-        return Column(
-          children: [
-            const SizedBox(height: 8),
-            SingerCard(
-              coverPictureUrl: userItem.coverPictureUrl,
-              nickname: userItem.nickname,
-              musicCount: userItem.musicCount,
-              musicPlayCount: userItem.musicPlayCount,
+    super.build(context);
+    return EasyRefresh(
+      controller: _easyRefreshController,
+      onRefresh: _onRefresh,
+      onLoad: _onLoad,
+      header: ClassicalHeader(),
+      footer: ClassicalFooter(),
+      enableControlFinishLoad: true,
+      enableControlFinishRefresh: true,
+      child: GridView.builder(
+        itemCount: _singerList.length,
+        itemBuilder: (BuildContext buildContext, int index) {
+          UserItem usrItem = _singerList[index];
+          bool isEven = index.isEven;
+          double pl = isEven ? 18 : 9;
+          double pr = isEven ? 9 : 18;
+          return Container(
+            padding: EdgeInsets.only(top: 18, left: pl, right: pr),
+            decoration: const BoxDecoration(color: Colors.white),
+            child: SingerCard(
+              coverPictureUrl: usrItem.coverPictureUrl,
+              nickname: usrItem.nickname,
+              musicCount: usrItem.musicCount,
+              musicPlayCount: usrItem.musicPlayCount,
             ),
-          ],
-        );
-      },
+          );
+        },
+        padding: const EdgeInsets.only(top: 8),
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
+            mainAxisExtent: MediaQuery.of(context).size.width / 1.5,
+            mainAxisSpacing: 8,
+            crossAxisSpacing: 1),
+      ),
     );
+  }
+
+  @override
+  bool get wantKeepAlive => true;
+
+  Future<void> _onRefresh() async {
+    await _getSingers();
+    _easyRefreshController.finishRefresh();
+    _easyRefreshController.resetRefreshState();
+  }
+
+  Future<void> _onLoad() async {
+    if (hasMore) {
+      await _getSingers();
+    }
+    _easyRefreshController.finishLoad(noMore: !hasMore);
   }
 }

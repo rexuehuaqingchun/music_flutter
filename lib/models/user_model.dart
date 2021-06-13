@@ -1,7 +1,13 @@
 class UserList {
   final List<UserItem> list;
   UserList(this.list);
+
   factory UserList.fromJson(List<dynamic> list) {
+    dynamic map = list.map((e) => {
+       UserItem.formJson(e)
+    });
+    print(map);
+
     return UserList(list.map((item) => UserItem.formJson(item)).toList());
   }
 }
