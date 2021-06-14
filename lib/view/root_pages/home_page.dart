@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:music_flutter/components/root_page_head.dart';
-import 'package:music_flutter/config/http_options.dart';
 import 'package:music_flutter/http/Http.dart';
+import 'package:music_flutter/view/sub_page/article_page.dart';
 import 'package:music_flutter/view/sub_page/singer_page.dart';
 import 'package:music_flutter/view/sub_page/song_page.dart';
+import 'package:music_flutter/view/sub_page/video_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -40,8 +41,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     SongPage(),
     Text('推荐'),
     SingerPage(),
-    Text('小视频'),
-    Text('文章'),
+    VideoPage(),
+    ArticlePage(),
     Text('视频'),
   ];
 

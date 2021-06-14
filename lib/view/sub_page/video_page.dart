@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:music_flutter/components/singer_card.dart';
+import 'package:music_flutter/components/video_card.dart';
 import 'package:music_flutter/models/user_model.dart';
+import 'package:music_flutter/models/video_moduel.dart';
 import 'package:music_flutter/services/user_service.dart';
+import 'package:music_flutter/services/video_service.dart';
 
-class SingerPage extends StatefulWidget {
-  const SingerPage({Key? key}) : super(key: key);
+class VideoPage extends StatefulWidget {
+  const VideoPage({Key? key}) : super(key: key);
 
   @override
-  _SingerPageState createState() => _SingerPageState();
+  _VideoPageState createState() => _VideoPageState();
 }
 
-class _SingerPageState extends State<SingerPage>
+class _VideoPageState extends State<VideoPage>
     with AutomaticKeepAliveClientMixin {
-  List<UserItem> _singerList = UserList([]).list;
+  List<VideoItem> _videoList = VideoList([]).list;
 
   int page = 1;
   int limit = 10;
@@ -27,20 +30,20 @@ class _SingerPageState extends State<SingerPage>
   void initState() {
     super.initState();
     _easyRefreshController = new EasyRefreshController();
-    _getSingers();
+    //_getVideos();
   }
 
-  Future _getSingers({bool push = true}) async {
+  Future _getVideos({bool push = true}) async {
     try {
-      Map<String, dynamic> result = await UserService.getUsers(page: page);
-      UserList userList = UserList.fromJson(result['list']);
+      Map<String, dynamic> result = await VideoService.getVideos(page: page);
+      VideoList userList = VideoList.fromJson(result['list']);
       setState(() {
         hasMore = page * limit < result['total'];
         page++;
         if (push) {
-          _singerList.addAll(userList.list);
+          _videoList.addAll(userList.list);
         } else {
-          _singerList = userList.list;
+          _videoList = userList.list;
         }
       });
     } catch (e) {
@@ -61,29 +64,27 @@ class _SingerPageState extends State<SingerPage>
       enableControlFinishLoad: true,
       enableControlFinishRefresh: true,
       child: GridView.builder(
-        itemCount: _singerList.length,
+        itemCount: _videoList.length,
         itemBuilder: (BuildContext buildContext, int index) {
-          UserItem usrItem = _singerList[index];
+          VideoItem videoItem = _videoList[index];
           bool isEven = index.isEven;
           double pl = isEven ? 18 : 9;
           double pr = isEven ? 9 : 18;
           return Container(
             padding: EdgeInsets.only(top: 18, left: pl, right: pr),
             decoration: const BoxDecoration(color: Colors.white),
-            child: SingerCard(
-              coverPictureUrl: usrItem.coverPictureUrl,
-              nickname: usrItem.nickname,
-              musicCount: usrItem.musicCount,
-              musicPlayCount: usrItem.musicPlayCount,
+            child: VideoCard(
+              videoItem: videoItem,
             ),
           );
         },
         padding: const EdgeInsets.only(top: 8),
-        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: MediaQuery.of(context).size.width / 2,
-            mainAxisExtent: MediaQuery.of(context).size.width / 1.5,
-            mainAxisSpacing: 8,
-            crossAxisSpacing: 1),
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          mainAxisSpacing: 8,
+          crossAxisSpacing: 1,
+          childAspectRatio: 1 / 2
+        )
       ),
     );
   }
@@ -93,14 +94,14 @@ class _SingerPageState extends State<SingerPage>
 
   Future<void> _onRefresh() async {
     page = 1;
-    await _getSingers(push: false);
+    await _getVideos(push: false);
     _easyRefreshController.finishRefresh();
     _easyRefreshController.resetLoadState();
   }
 
   Future<void> _onLoad() async {
     if (hasMore) {
-      await _getSingers();
+      await _getVideos();
     }
     _easyRefreshController.finishLoad(noMore: !hasMore);
   }
